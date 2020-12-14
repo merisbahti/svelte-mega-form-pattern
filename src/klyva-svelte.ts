@@ -6,7 +6,9 @@ export const slicedStore = <T>(store: Writable<Array<T>>): Readable<Array<Writab
             let latestValue: Array<Writable<T>>
             const unsub = store.subscribe((value) => {
                 if (!latestValue || value.length !== latestValue.length) {
-                    listen(sliceStore(store))
+                    const sliced = sliceStore(store)
+                    latestValue = sliced
+                    listen(sliced)
                 }
             })
             const unsubscribe = () => {
