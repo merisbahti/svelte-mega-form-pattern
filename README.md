@@ -51,3 +51,10 @@ This gives us a store, `formSlices`, that we subscribe to and map out each store
 
 ### MegaForm
 Similarily to how Form mutates its inputs, that's how `MegaForm` does it too.
+
+
+# Screenshot 
+
+Here's how the application looks:
+
+![image of the mega form application](mega-form-screnshot.png)
