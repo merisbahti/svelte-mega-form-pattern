@@ -1,7 +1,5 @@
 <script lang="ts">
-  import localStorageStore from './local-storage-store'
-  import * as io from 'io-ts'
-  import MegaForm from './MegaForm.svelte'
+  import MegaForm from './components/MegaForm.svelte'
   import { writable } from 'svelte/store'
   const initialValue = {
     form1: { task: 'Eat some food', checked: 'yeah' },
@@ -37,6 +35,7 @@
     form75: { task: 'Eat some food', checked: 'yeah' },
     form85: { task: 'Eat some food', checked: 'yeah' },
   }
+  $: console.log($formList)
   const formList = writable(
     initialValue as { [key in string]: { [key in string]: string } },
   )

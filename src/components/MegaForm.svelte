@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Writable } from 'svelte/store'
-  import focusStore from './focusStore'
-  import { slicedStore } from './slicedStore'
+  import focusStore from '../cleavers/focusStore'
+  import { slicedStore } from '../cleavers/slicedStore'
   import Form from './Form.svelte'
 
   export let formList: Writable<Record<string, Record<string, string>>>
