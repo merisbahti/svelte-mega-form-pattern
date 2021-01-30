@@ -23,12 +23,12 @@
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.0",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.3"
+    "typescript": "^4.1.3"
   },
   "dependencies": {
     "fp-ts": "^2.9.3",
     "io-ts": "^2.2.13",
-    "klyva": "^0.6.3",
+    "optics-ts": "^2.0.0",
     "sirv-cli": "^1.0.0"
   }
 }
