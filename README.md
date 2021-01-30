@@ -6,19 +6,48 @@ This repo is a demo of how the global store, can flow _with_ the component tree.
 
   1. We allow the passing of Stores as component properties.
   2. We use the `slicedStore` utility to "slice" a Store of a list, into a list of stores that can be mapped out by components.
+  3. We use the `focusStore` utility to "focus" on the store, using optics, to create a store that's easier for us to operate on. For example isomorphic transformations, to transform an object to an array using `Object.entries`, and then transforming it back using `Object.fromEntries`.
+
+This might sound complicated, but learning these two utilities can make building applications much easier.
+This only acknowledges common patterns of building applications, and makes them easier by not having to 
+leave the "Store" context.
 
 ## Explaination
 
-### App
-App creates a store, todoItems, (a localstorage store) that contains a list of todos. This store is passed as a prop to the `TodoItem`.
+The application renders an object (formList), which contains 36 forms. 
+Each of these forms contains a number of fields. 
+In order to make the application scalable, it has been split up into three components, 
+each with its own responsibility.
 
-### TodoList
-`TodoList` receives a prop `Writable<Todo[]>`, but this contains a list. The `TodoItem` expects to be given just a todoitem `Writable<Todo>`. To slice out the todoitems from the store, the `sliceStore` utility is used. Note that the `sliceStore` utility returns writable stores that can be removed using an extra method called `remove`. Also, if the TodoList changes in size, the TodoList is updated with a new list of todo-stores.
+Please take a look in the `src/components` directory, the component hierarchy is like this:
 
-### TodoItem
-The TodoItem is given a `Writable<Todo>`, and happily renders components to manipulate this store. It is happily unaware of any global state, or any context it exists in. It has no global dependencies.
+```
+App.svelte
+ L MegaForm.svelte
+    L Form.svelte
+       L Field.svelte
+```
 
+I suggest starting at `Field.svelte`, working your way up.
 
-# Future:
+### Field
+A component that takes two props: `name`, `value`, both being a `Writable<string>`. 
+Nothing special about this one, the component doesn't know anything about a global state. 
+All it is responsible for is its name- and value-attributes.
 
-  NYI - For more complicated examples, we'll be implementing `focusAtom` from [klyva](https://github.com/merisbahti/klyva). This will give us the superpowers of optics, i.e. Lenses, Prisms and Isomorphisms. This helps us transform our stores into stores that are easier for manipulation.
+### Form
+A component that takes two props
+
+  * `name: Writable<string>`: The name of the form. This is just bound to an input so that the user can control/view the value.
+  * `form: Writable<Record<string, string>>`: An object containing all the names/values of the fields.
+
+Ok so what's going on here? We transform the `form`-store, using the `focusStore`-function, because we'd rather have a
+store of tuples, first tuple being the `name` of the field, and second tuple being the `value` of the field. 
+The reason we transform it back, is that the form is not a list of tuples, but an object, so the second argument to the
+iso is for us to be able to apply updates to our `form`-store.
+
+Additionally, we use the `slicedStore` utility to map out our list of tuples, creating a store for each item in the store.
+This gives us a store, `formSlices`, that we subscribe to and map out each store to a `Field`-component.
+
+### MegaForm
+Similarily to how Form mutates its inputs, that's how `MegaForm` does it too.
