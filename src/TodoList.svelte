@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { get, writable } from 'svelte/store'
   import type { Writable } from 'svelte/store'
   import { slicedStore } from './klyva-svelte'
   import TodoItem from './TodoItem.svelte'
@@ -8,11 +9,14 @@
       text: string
     }>
   >
-  let currentTodoText = ''
+  const currentTodoText = writable('')
 
   const createTodo = () => {
-    todoItems.update((v) => [...v, { checked: false, text: currentTodoText }])
-    currentTodoText = ''
+    todoItems.update((v) => [
+      ...v,
+      { checked: false, text: get(currentTodoText) },
+    ])
+    currentTodoText.set('')
   }
 
   const keyDown: svelte.JSX.EventHandler<KeyboardEvent, HTMLInputElement> = (
@@ -24,7 +28,7 @@
 </script>
 
 <ul>
-  <input bind:value={currentTodoText} on:keydown={keyDown} />
+  <input bind:value={$currentTodoText} on:keydown={keyDown} />
   <button on:click={createTodo}>Add new</button>
   {#each $sliced as slice}
     <TodoItem todoStore={slice} remove={slice.remove} />

@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { writable } from 'svelte/store'
+  import localStorageStore from './local-storage-store'
   import TodoList from './TodoList.svelte'
-  const todoAtom = writable([{ checked: false, text: 'poop' }])
+  import * as io from 'io-ts'
+  const todoAtom = localStorageStore(
+    [{ checked: false, text: 'do some stuff' }],
+    'store',
+    io.array(io.type({ checked: io.boolean, text: io.string })).is,
+  )
 </script>
 
 <h1>Hello there</h1>
 <TodoList todoItems={todoAtom} />
-<pre>{JSON.stringify($todoAtom, null, 2)}</pre>

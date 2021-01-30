@@ -26,6 +26,8 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
+    "fp-ts": "^2.9.3",
+    "io-ts": "^2.2.13",
     "klyva": "^0.6.3",
     "sirv-cli": "^1.0.0"
   }
