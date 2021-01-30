@@ -41,5 +41,5 @@
   )
 </script>
 
-<h1>Hello there</h1>
+<h1>Mega form!</h1>
 <MegaForm {formList} />
