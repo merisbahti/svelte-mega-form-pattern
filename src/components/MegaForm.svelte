@@ -6,19 +6,25 @@
 
   export let formList: Writable<Record<string, Record<string, string>>>
 
-  let entries = focusStore(formList, (optic) =>
+  const entries = focusStore(formList, (optic) =>
     optic.iso(
       (object) => Object.entries(object),
       (entries) => Object.fromEntries(entries),
     ),
   )
-  let sliced = slicedStore(entries)
+  const sliced = slicedStore(entries)
+
+  const addNewForm = () => {
+    entries.update((old) => [...old, [`new form ${old.length}`, {}]])
+  }
 </script>
 
 <ul>
   {#each $sliced as slice}
     <Form
       name={focusStore(slice, (optic) => optic.nth(0))}
-      form={focusStore(slice, (optic) => optic.nth(1))} />
+      form={focusStore(slice, (optic) => optic.nth(1))}
+      remove={slice.remove} />
   {/each}
+  <button on:click={addNewForm}>Add new form</button>
 </ul>
